@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	data-theme="theme-dark" xmlns:form="http://www.thymeleaf.org">
+<head th:replace="layout/fragments :: head"></head>
+<body>
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+
+			<div th:replace="layout/fragments :: sidebar"></div>
+
+			<div class="layout-page">
+				<div th:replace="layout/fragments :: navbar"></div>
+
+				<div class="content-wrapper">
+					<div class="container-xxl flex-grow-1 container-p-y">
+
+						<div class="card">
+							<div class="card-body">
+								<h4 class="mb-3">
+									<span th:if="${usuario.idUsuario == null}">Nuevo Usuario</span>
+									<span th:if="${usuario.idUsuario != null}">Editar
+										Usuario</span>
+								</h4>
+								<hr />
+
+								<div th:replace="layout/fragments :: mensajes"></div>
+
+								<form th:action="@{/usuario/guardar}" th:object="${usuario}"
+									method="post">
+									<input type="hidden" th:field="*{idUsuario}" />
+
+									<div class="row mb-3">
+										<div class="col-md-6">
+											<label class="form-label">Nombres</label> <input type="text"
+												class="form-control" th:field="*{nombres}"
+												th:classappend="${#fields.hasErrors('nombres')} ? ' is-invalid' : ''" />
+											<div class="text-danger small"
+												th:if="${#fields.hasErrors('nombres')}"
+												th:errors="*{nombres}"></div>
+										</div>
+										<div class="col-md-6">
+											<label class="form-label">Apellidos</label> <input
+												type="text" class="form-control" th:field="*{apellidos}"
+												th:classappend="${#fields.hasErrors('apellidos')} ? ' is-invalid' : ''" />
+											<div class="text-danger small"
+												th:if="${#fields.hasErrors('apellidos')}"
+												th:errors="*{apellidos}"></div>
+										</div>
+									</div>
+
+									<div class="row mb-3">
+										<div class="col-md-6">
+											<label class="form-label">Teléfono</label> <input type="text"
+												class="form-control" th:field="*{telefono}"
+												th:classappend="${#fields.hasErrors('telefono')} ? ' is-invalid' : ''" />
+											<div class="text-danger small"
+												th:if="${#fields.hasErrors('telefono')}"
+												th:errors="*{telefono}"></div>
+										</div>
+										<div class="col-md-6">
+											<label class="form-label">Correo</label> <input type="email"
+												class="form-control" th:field="*{correo}"
+												th:classappend="${#fields.hasErrors('correo')} ? ' is-invalid' : ''" />
+											<div class="text-danger small"
+												th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></div>
+										</div>
+									</div>
+
+									<div class="row mb-3">
+										<div th:if="${usuario.idUsuario == null}" class="col-md-6">
+											<label class="form-label">Contraseña</label> <input
+												type="password" class="form-control"
+												th:field="*{contrasena}"
+												th:classappend="${#fields.hasErrors('contrasena')} ? ' is-invalid' : ''" />
+											<div class="text-danger small"
+												th:if="${#fields.hasErrors('contrasena')}"
+												th:errors="*{contrasena}"></div>
+										</div>
+										<div class="col-md-6">
+											<label class="form-label">Rol</label> <select
+												class="form-select" th:field="*{rol}"
+												th:classappend="${#fields.hasErrors('rol')} ? ' is-invalid' : ''">
+												<option value="">::: Seleccione :::</option>
+												<option th:each="rol : ${roles}" th:value="${rol.idRol}"
+													 th:text="${#strings.replace(rol.nombre, 'ROLE_', '')}"></option>
+											</select>
+											<div class="text-danger small"
+												th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}"></div>
+										</div>
+
+										<div class="col-md-6 mt-3">
+											<label class="form-label">Estado</label> <select
+												class="form-select" th:field="*{estado}"
+												th:classappend="${#fields.hasErrors('estado')} ? ' is-invalid' : ''">
+												<option value="">::: Seleccione :::</option>
+												<option value="1">Activo</option>
+												<option value="0">Inactivo</option>
+											</select>
+											<div class="text-danger small"
+												th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></div>
+										</div>
+									</div>
+
+									<div class="d-flex justify-content-between">
+										<a th:href="@{/usuario/listar}" class="btn btn-secondary">
+											<i class="fas fa-arrow-left me-1"></i> Cancelar
+										</a>
+										<button type="submit" class="btn btn-primary">
+											<i class="fas fa-save me-1"></i> Guardar
+										</button>
+									</div>
+								</form>
+
+							</div>
+						</div>
+
+					</div>
+					<div class="content-backdrop fade"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="layout/fragments :: scripts"></div>
+	<script src="https://kit.fontawesome.com/a2e0f1f0af.js"
+		crossorigin="anonymous"></script>
+</body>
+</html>

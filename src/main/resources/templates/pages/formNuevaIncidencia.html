@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" data-theme="theme-dark">
+<head th:replace="layout/fragments :: head"></head>
+<body>
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <div th:replace="layout/fragments :: sidebar"></div>
+        <div class="layout-page">
+            <div th:replace="layout/fragments :: navbar"></div>
+
+            <div class="content-wrapper">
+                <div class="container-xxl flex-grow-1 container-p-y">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="mb-3">Nuevo Incidente</h4>
+                            <p class="text-muted">Complete los datos para registrar un nuevo incidente.</p>
+                            <hr/>
+
+                            <div th:replace="layout/fragments :: mensajes"></div>
+
+                            <form th:action="@{/incidente/guardar}" th:object="${incidente}" method="post">
+                                <input type="hidden" th:field="*{idIncidente}" />
+
+                                <div class="mb-3">
+                                    <label class="form-label">Título</label>
+                                    <input type="text" class="form-control" th:field="*{titulo}"
+                                           th:classappend="${#fields.hasErrors('titulo')} ? ' is-invalid' : ''"/>
+                                    <div class="text-danger small" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Descripción</label>
+                                    <textarea class="form-control" th:field="*{descripcion}" rows="4"
+                                              th:classappend="${#fields.hasErrors('descripcion')} ? ' is-invalid' : ''"></textarea>
+                                    <div class="text-danger small" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Prioridad</label>
+                                    <select class="form-select" th:field="*{prioridad}"
+                                            th:classappend="${#fields.hasErrors('prioridad')} ? ' is-invalid' : ''">
+                                        <option value="">::: Seleccione :::</option>
+                                        <option value="Alta">Alta</option>
+                                        <option value="Media">Media</option>
+                                        <option value="Baja">Baja</option>
+                                    </select>
+                                    <div class="text-danger small" th:if="${#fields.hasErrors('prioridad')}" th:errors="*{prioridad}"></div>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <a th:href="@{/incidente/listar}" class="btn btn-secondary">
+                                        <i class="fas fa-arrow-left me-1"></i> Cancelar
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save me-1"></i> Registrar
+                                    </button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="content-backdrop fade"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="layout/fragments :: scripts"></div>
+<script src="https://kit.fontawesome.com/a2e0f1f0af.js" crossorigin="anonymous"></script>
+</body>
+</html>

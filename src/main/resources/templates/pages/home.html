@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" data-theme="theme-dark">
+<head th:replace="layout/fragments :: head"></head>
+<body>
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+
+			<div th:replace="layout/fragments :: sidebar"></div>
+
+			<div class="layout-page">
+				<div th:replace="layout/fragments :: navbar"></div>
+
+				<div class="content-wrapper">
+					<div class="container-xxl flex-grow-1 container-p-y">
+						
+						<div class="row mb-4">
+							<div class="col">
+								<h4 class="mb-3">Panel de Inicio</h4>
+							</div>
+						</div>
+
+						<div class="row">
+							<!-- Incidentes Pendientes -->
+							<div class="col-md-3 col-sm-6 mb-4">
+								<div class="card text-white bg-warning h-100">
+									<div class="card-body text-center">
+										<h5 class="card-title">Incidentes Pendientes</h5>
+										<h2 class="card-text" th:text="${pendientes}"></h2>
+									</div>
+								</div>
+							</div>
+
+							<!-- En Proceso -->
+							<div class="col-md-3 col-sm-6 mb-4">
+								<div class="card text-white bg-info h-100">
+									<div class="card-body text-center">
+										<h5 class="card-title">En Proceso</h5>
+										<h2 class="card-text" th:text="${enProceso}"></h2>
+									</div>
+								</div>
+							</div>
+
+							<!-- Cerrados -->
+							<div class="col-md-3 col-sm-6 mb-4">
+								<div class="card text-white bg-success h-100">
+									<div class="card-body text-center">
+										<h5 class="card-title">Cerrados</h5>
+										<h2 class="card-text" th:text="${resueltos}"></h2>
+									</div>
+								</div>
+							</div>
+
+							<!-- Total -->
+							<div class="col-md-3 col-sm-6 mb-4">
+								<div class="card text-white bg-primary h-100">
+									<div class="card-body text-center">
+										<h5 class="card-title">Total de Incidentes</h5>
+										<h2 class="card-text" th:text="${total}"></h2>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="content-backdrop fade"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="layout/fragments :: scripts"></div>
+</body>
+</html>

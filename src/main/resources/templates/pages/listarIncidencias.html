@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	data-theme="theme-dark">
+<head th:replace="layout/fragments :: head"></head>
+<body>
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+
+			<div th:replace="layout/fragments :: sidebar"></div>
+
+			<div class="layout-page">
+				<div th:replace="layout/fragments :: navbar"></div>
+
+				<div class="content-wrapper">
+					<div class="container-xxl flex-grow-1 container-p-y">
+
+						<div
+							class="d-flex justify-content-between align-items-center mb-3">
+							<h4 class="mb-0">Lista de Incidentes</h4>
+							<a th:if="${esCliente}" th:href="@{/incidente/nuevo}" class="btn btn-primary"> <i
+								class="fas fa-plus me-1"></i> Nuevo Incidente
+							</a>
+						</div>
+
+						<div th:replace="layout/fragments :: mensajes"></div>
+
+						<div class="card">
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="table table-bordered table-hover align-middle">
+										<thead class="table-dark text-center">
+											<tr>
+												<th>Nro Incidencia</th>
+												<th>Título</th>
+												<th>Descripción</th>
+												<th>Fecha Creación</th>
+												<th>Prioridad</th>
+												<th>Estado</th>
+												<th>Cliente</th>
+												<th>Técnico</th>
+												<th>Acciones</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="incidente : ${incidentes}">
+												<td th:text="${incidente.idIncidente}"></td>
+												<td th:text="${incidente.titulo}"></td>
+												<td th:text="${incidente.descripcion}"></td>
+												<td
+													th:text="${#temporals.format(incidente.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></td>
+												<td th:text="${incidente.prioridad}"></td>
+												<td th:text="${incidente.estado.nombre}"></td>
+												<td
+													th:text="${incidente.cliente != null ? incidente.cliente.nombres + ' ' + incidente.cliente.apellidos : 'Sin cliente'}"></td>
+												<td
+													th:text="${incidente.tecnico != null ? incidente.tecnico.nombres + ' ' + incidente.tecnico.apellidos : 'No asignado'}"></td>
+												<td class="text-center"><a href="javascript:void(0);"
+													class="btn btn-sm btn-info ver-bitacora"
+													th:attr="data-id=${incidente.idIncidente}"> <i
+														class="fas fa-eye"></i> Ver Bitácora
+												</a></td>
+											</tr>
+											<tr th:if="${incidentes.isEmpty()}">
+												<td colspan="9" class="text-center text-muted">No hay
+													incidencias registradas.</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="content-backdrop fade"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="modalBitacora" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<h5 class="modal-title">Bitácora de Incidente</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+
+				<div class="modal-body">
+					<table class="table table-bordered" id="tablaBitacora">
+						<thead class="table-light">
+							<tr>
+								<th>#</th>
+								<th>Estado</th>
+								<th>Fecha</th>
+								<th>Registrado por</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-bs-dismiss="modal">Cerrar</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="layout/fragments :: scripts"></div>
+</body>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = new bootstrap.Modal(document.getElementById('modalBitacora'));
+    const tablaBody = document.querySelector('#tablaBitacora tbody');
+
+    document.querySelectorAll('.ver-bitacora').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const idIncidente = btn.getAttribute('data-id');
+			
+            fetch("/incidente/bitacora/ver/"+idIncidente)
+                .then(res => res.json())
+                .then(data => {
+                    tablaBody.innerHTML = "";
+
+                    if (data.length === 0) {
+                        tablaBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">Sin registros</td></tr>`;
+                    } else {
+                        data.forEach((bit, idx) => {
+                            const row = `<tr>
+                                <td>${idx + 1}</td>
+                                <td>${bit.estado.nombre}</td>
+                                <td>${new Date(bit.fecha).toLocaleString()}</td>
+                                <td>${bit.usuario.nombres} ${bit.usuario.apellidos}</td>
+                            </tr>`;
+                            tablaBody.insertAdjacentHTML("beforeend", row);
+                        });
+                    }
+
+                    modal.show();
+                })
+                .catch(err => {
+                    tablaBody.innerHTML = `<tr><td colspan="4" class="text-danger text-center">Error al cargar bitácora</td></tr>`;
+                    modal.show();
+                });
+        });
+    });
+});
+</script>
+</html>

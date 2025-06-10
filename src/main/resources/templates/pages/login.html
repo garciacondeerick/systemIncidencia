@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login - Sistema de Incidencias</title>
+
+<link rel="icon" type="image/x-icon"
+	th:href="@{/assets/img/favicon/favicon.ico}" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com"  />
+<link
+	href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap"
+	rel="stylesheet" />
+
+<link rel="stylesheet" th:href="@{/assets/vendor/css/core.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/css/theme-default.css}" />
+<link rel="stylesheet" th:href="@{/assets/css/demo.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+<link rel="stylesheet"
+	th:href="@{/assets/vendor/css/pages/page-auth.css}" />
+
+<script th:src="@{/assets/vendor/js/helpers.js}"></script>
+<script th:src="@{/assets/js/config.js}"></script>
+</head>
+
+<body>
+	<div class="container-xxl">
+		<div class="authentication-wrapper authentication-basic container-p-y">
+			<div class="authentication-inner">
+				<!-- Card login -->
+				<div class="card">
+					<div class="card-body">
+						<div class="app-brand justify-content-center mb-4">
+							<a href="#" class="app-brand-link gap-2"> <span
+								class="app-brand-logo demo"> <img
+									th:src="@{/assets/img/logo.jpg}" alt="Logo" width="30" />
+							</span> <span class="app-brand-text demo text-heading fw-bold">Sistema
+									SGI</span>
+							</a>
+						</div>
+
+						<h4 class="mb-2 text-center">Bienvenido</h4>
+						<p class="mb-4 text-center">Ingrese sus credenciales</p>
+
+						<div class="mb-3" th:if="${param.error}">
+							<div class="alert alert-danger" role="alert">Credenciales
+								inválidas. Intente nuevamente.</div>
+						</div>
+
+						<div class="mb-3" th:if="${param.logout}">
+							<div class="alert alert-success" role="alert">Ha cerrado
+								sesión correctamente.</div>
+						</div>
+
+						<form th:action="@{/login}" method="post" id="formAuthentication">
+							<div class="mb-3">
+								<label for="username" class="form-label">Correo</label> <input
+									type="email" class="form-control" id="username" name="username"
+									placeholder="Ingrese su correo" required autofocus value="" />
+							</div>
+
+							<div class="mb-3 form-password-toggle">
+								<label class="form-label" for="password">Contraseña</label>
+								<div class="input-group input-group-merge">
+									<input type="password" id="password" class="form-control"
+										name="password" placeholder="Ingrese su contraseña" required value="" />
+									<span class="input-group-text cursor-pointer"><i
+										class="bx bx-hide"></i></span>
+								</div>
+							</div>
+							<div class="mb-3">
+								<button class="btn btn-primary d-grid w-100" type="submit">Iniciar
+									Sesión</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Core JS -->
+	<script th:src="@{/assets/vendor/libs/jquery/jquery.js}"></script>
+	<script th:src="@{/assets/vendor/libs/popper/popper.js}"></script>
+	<script th:src="@{/assets/vendor/js/bootstrap.js}"></script>
+	<script
+		th:src="@{/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+	<script th:src="@{/assets/vendor/js/menu.js}"></script>
+	<script th:src="@{/assets/js/main.js}"></script>
+</body>
+</html>

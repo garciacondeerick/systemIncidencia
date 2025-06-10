@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	data-theme="theme-dark">
+<head th:replace="layout/fragments :: head"></head>
+<body>
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+			<div th:replace="layout/fragments :: sidebar"></div>
+			<div class="layout-page">
+				<div th:replace="layout/fragments :: navbar"></div>
+
+				<div class="content-wrapper">
+					<div class="container-xxl flex-grow-1 container-p-y">
+
+						<div class="card">
+							<div class="card-body">
+								<h4 class="mb-3">
+									Asignar Técnico al Incidente #<span
+										th:text="${incidente.idIncidente}"></span>
+								</h4>
+								<hr />
+
+								<div th:replace="layout/fragments :: mensajes"></div>
+
+								<form th:action="@{/incidente/asignar-tecnico}" method="post">
+									<input type="hidden" name="incidenteId"
+										th:value="${incidente.idIncidente}" />
+
+									<div class="row">
+										<div class="col-md-6 mb-3">
+											<label class="form-label fw-bold">Cliente</label>
+											<p
+												class="form-control-plaintext border bg-light px-2 rounded">
+												<span
+													th:text="${incidente.cliente.nombres + ' ' + incidente.cliente.apellidos}">Nombre
+													Cliente</span>
+											</p>
+										</div>
+										<div class="col-md-6 mb-3">
+											<label class="form-label fw-bold">Fecha de Creación</label>
+											<p
+												class="form-control-plaintext border bg-light px-2 rounded">
+												<span
+													th:text="${#temporals.format(incidente.fechaCreacion, 'dd/MM/yyyy HH:mm')}">Fecha</span>
+											</p>
+										</div>
+									</div>
+
+									<div class="mb-3">
+										<label class="form-label fw-bold">Título</label>
+										<p class="form-control-plaintext border bg-light px-2 rounded"
+											th:text="${incidente.titulo}">Título</p>
+									</div>
+
+									<div class="mb-3">
+										<label class="form-label fw-bold">Descripción</label>
+										<div
+											class="form-control-plaintext border bg-light px-2 py-2 rounded"
+											style="white-space: pre-line;"
+											th:text="${incidente.descripcion}">Descripción</div>
+									</div>
+
+									<div class="row">
+										<div class="col-md-6 mb-3">
+											<label class="form-label fw-bold">Prioridad</label>
+											<p
+												class="form-control-plaintext border bg-light px-2 rounded"
+												th:text="${incidente.prioridad}">Prioridad</p>
+										</div>
+										<div class="col-md-6 mb-3">
+											<label class="form-label fw-bold">Estado</label>
+											<p
+												class="form-control-plaintext border bg-light px-2 rounded"
+												th:text="${incidente.estado.nombre}">Estado</p>
+										</div>
+									</div>
+
+									<hr />
+
+									<div class="mb-3">
+										<label for="tecnicoId" class="form-label fw-bold">Seleccionar
+											Técnico</label> <select name="tecnicoId" class="form-select" >
+											<option value="" >::: Seleccione :::</option>
+											<option th:each="t : ${tecnicos}" th:value="${t.idUsuario}"
+												th:text="${t.nombres + ' ' + t.apellidos}"></option>
+										</select>
+									</div>
+
+									<div class="d-flex justify-content-between">
+										<a th:href="@{/incidente/sin-asignar}"
+											class="btn btn-secondary">Cancelar</a>
+										<button type="submit" class="btn btn-primary">Asignar
+											Técnico</button>
+									</div>
+								</form>
+
+							</div>
+						</div>
+
+					</div>
+					<div class="content-backdrop fade"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="layout/fragments :: scripts"></div>
+</body>
+</html>
